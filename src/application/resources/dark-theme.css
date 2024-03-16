@@ -1,0 +1,22 @@
+.root {
+	background-color: #282828;
+	-fx-background-color: #282828;
+    -fx-base: #282828;
+    -fx-accent: #f5f5f5;
+    -fx-default-button: #727272;
+    -fx-focus-color: #efefef;
+    -fx-faint-focus-color: #efefef22;
+    -fx-focused-text-base-color : ladder(
+            -fx-selection-bar,
+            -fx-light-text-color 45%,
+            -fx-dark-text-color 46%,
+            -fx-dark-text-color 59%,
+            -fx-mid-text-color 60%
+        );
+    -fx-focused-mark-color : -fx-focused-text-base-color ;   
+}
+.dark {
+	-fx-background-color: #181818;
+	background-color: #181818;
+	-fx-text-fill: white;
+}

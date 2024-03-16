@@ -5,3 +5,7 @@
 .uthmani-font {
     -fx-font-family: "KFGQPC Uthmanic Script HAFS";
 }
+.dark {
+	-fx-background-color: #ffffff;
+	-fx-text-fill: black;
+}
