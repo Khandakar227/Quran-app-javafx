@@ -1,23 +1,24 @@
 package application;
 	
-import java.sql.Connection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.text.Font;
+import javafx.scene.image.Image;
 
 
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-//			Font.loadFont(getClass().getResourceAsStream("resources/UthmanicScriptHAFS.otf"), 24);
-			Connection connection = DbController.getInstance();			
+//			Font.loadFont(getClass().getResourceAsStream("resources/UthmanicScriptHAFS.otf"), 24);		
 			Parent root = FXMLLoader.load(getClass().getResource("/Home.fxml"));
 			Scene scene = new Scene(root,500,700);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			
+			primaryStage.getIcons().add(new Image("/application/resources/App-icon.png"));
+			
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {
