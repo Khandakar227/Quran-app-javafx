@@ -14,9 +14,10 @@
             -fx-mid-text-color 60%
         );
     -fx-focused-mark-color : -fx-focused-text-base-color ;   
+    
 }
 .dark {
 	-fx-background-color: #181818;
-	background-color: #181818;
-	-fx-text-fill: white;
+	-fx-text-fill: #FFF!important;
+	-fx-fill: #FFF;
 }

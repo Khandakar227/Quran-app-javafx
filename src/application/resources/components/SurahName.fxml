@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root alignment="CENTER" prefHeight="200.0" prefWidth="600.0" styleClass="dark" type="VBox" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="arabic_name" alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-size: 22pt; -fx-font-weight: bold;" styleClass="uthmani-font" textAlignment="CENTER" />
+      <Label fx:id="translated_name" alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-size: 20pt; -fx-font-weight: bold;" textAlignment="CENTER" />
+   </children>
+</fx:root>

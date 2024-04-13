@@ -17,6 +17,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -27,13 +28,18 @@ import javafx.scene.layout.VBox;
 public class RootPaneController implements Initializable {
 	private Scene scene;
 	@FXML
+	ScrollPane container;
+	@FXML
 	VBox root_pane;
 	@FXML
 	TextField search_field;
 	@FXML
 	Button dark_mode_btn;
+	@FXML
+	Label home_label;
+	@FXML
+	Button search_btn;
 	
-	private FlowPane flowPane;
 	private boolean isDarkMode = false;
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -41,28 +47,25 @@ public class RootPaneController implements Initializable {
 			System.out.println("No root_pane");
 			return;
 		}
-		 
-		flowPane = new FlowPane();
-		ScrollPane scrollPane = new ScrollPane();
-
-		flowPane.setAlignment(Pos.CENTER);
-		scrollPane.setContent(flowPane);
-		scrollPane.setFitToWidth(true);
-		root_pane.getChildren().add(scrollPane);
-		
-		getAllSurah(flowPane);
+		// Set Navigation controller for navigating to different page
+		NavigationController.setContainer(container);
+		NavigationController.goToHome();
 		
 		// Dark mode button function
 		dark_mode_btn.setOnAction(e -> {
 			if(!isDarkMode) {
 				scene.getStylesheets().add("/application/resources/dark-theme.css");
-				setButtonIcon(e, "/application/resources/night-mode.png");
+				setButtonIcon(e, "/application/resources/day-mode.png");
 				isDarkMode = true;
 			} else {
 				scene.getStylesheets().remove("/application/resources/dark-theme.css");
-				setButtonIcon(e, "/application/resources/day-mode.png");
+				setButtonIcon(e, "/application/resources/night-mode.png");
 				isDarkMode = false;
 			}
+		});
+		
+		home_label.setOnMouseClicked(e -> {
+			NavigationController.goToHome();
 		});
 	 }
 	 
@@ -76,40 +79,15 @@ public class RootPaneController implements Initializable {
 		btn.setGraphic(imageView);
 	}
 	
-	
-	 private void getAllSurah(FlowPane flowPane) {
-		Connection connection = DbController.getInstance();	
-		try {
-			Statement statement = connection.createStatement();
-			String sql = "SELECT * FROM surahs";
-			ResultSet resultSet = statement.executeQuery(sql);
-			
-			ObservableList<Node> flowPaneChildren = flowPane.getChildren();
-			
-			new Thread(() -> {
-				try {
-					while (resultSet.next()) {
-						int surahNumber = resultSet.getInt("number");
-						String name = resultSet.getString("name");
-						String englishName = resultSet.getString("englishName");
-						String englishNameTranslation = resultSet.getString("englishNameTranslation");
-						String surahType = resultSet.getString("revelationType");
-						Platform.runLater(()-> {
-							flowPaneChildren.add(new SurahCard(surahNumber, name, englishName + " (" + englishNameTranslation + ")", surahType));							
-						});
-					}
-					resultSet.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}				
-			}).start();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	 }
-	 
 	 public void setScene(Scene scene) {
         this.scene = scene;
+	 }
+	 
+	 @FXML
+	 void onSearch() {
+		 String keyword = search_field.getText().toLowerCase();
+		 if(AppData.searchedKeyword.equals(keyword)) return;
+		 AppData.searchedKeyword = keyword.toLowerCase();
+		 NavigationController.goToSearchPage();
 	 }
 }
