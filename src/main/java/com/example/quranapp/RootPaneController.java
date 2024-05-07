@@ -9,10 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
@@ -32,7 +29,9 @@ public class RootPaneController implements Initializable {
 	Label home_label;
 	@FXML
 	Button search_btn;
-	
+	@FXML
+	Menu menu;
+
 	private boolean isDarkMode = false;
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -60,6 +59,8 @@ public class RootPaneController implements Initializable {
 		home_label.setOnMouseClicked(e -> {
 			NavigationController.goToHome();
 		});
+
+		menu.setGraphic(getImage("nav-menu.png", 20));
 	 }
 	 
 
@@ -75,7 +76,15 @@ public class RootPaneController implements Initializable {
 	 public void setScene(Scene scene) {
         this.scene = scene;
 	 }
-	 
+
+	 public ImageView getImage(String name, int size) {
+		 Image icon = new Image(String.valueOf(RootPaneController.class.getResource(name).toExternalForm()));
+		 ImageView imageView = new ImageView(icon);
+		 imageView.setFitHeight(size);
+		 imageView.setFitWidth(size);
+		 return imageView;
+	 }
+
 	 @FXML
 	 void onSearch() {
 		 String keyword = search_field.getText().toLowerCase();
