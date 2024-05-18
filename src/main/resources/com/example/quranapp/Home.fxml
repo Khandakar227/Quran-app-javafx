@@ -8,7 +8,6 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -89,12 +88,9 @@
                   <Insets />
                </opaqueInsets>
             </ScrollPane>
-            <AnchorPane prefHeight="50.0" prefWidth="500.0">
-               <effect>
-                  <Shadow />
-               </effect>
-            </AnchorPane>
          </children>
       </VBox>
+      <AnchorPane fx:id="audio_container" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="500.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      </AnchorPane>
    </children>
 </AnchorPane>

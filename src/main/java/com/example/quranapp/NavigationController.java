@@ -13,15 +13,18 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 
 public class NavigationController {
 	static ScrollPane container = null;
 	static VBox vbox;
-	
-	public static void setContainer(ScrollPane container) {
+	static AnchorPane audioContainer = null;
+
+	public static void setContainer(ScrollPane container, AnchorPane audioContainer) {
 		NavigationController.container = container;
+		NavigationController.audioContainer = audioContainer;
 	}
 	
 	public static void clearContainer() {
@@ -43,6 +46,8 @@ public class NavigationController {
 		flowPane.setAlignment(Pos.CENTER);
 		container.setContent(flowPane);
 		container.setFitToWidth(true);
+
+		audioContainer.setVisible(false);
 	}
 	
 	public static void goToSurah(int surahNumber, int from, int to, int totalAyahs) {
@@ -65,7 +70,13 @@ public class NavigationController {
 		container.setContent(vbox);
 
 		getAyahs(vbox);
+
+		audioContainer.setVisible(true);
+		audioContainer.getChildren().add(
+				new AudioPlayer(AppData.currentSurahNumber, AppData.fromAyahNumber, AppData.toAyahNumber)
+		);
 	}
+
 	public static void goToSearchPage() {
 		if(AppData.searchedKeyword.isBlank()) return;
 		AppData.currentPage = "Search";
@@ -76,6 +87,7 @@ public class NavigationController {
 		container.setContent(vbox);
 
 		getSearch(vbox);
+		audioContainer.setVisible(false);
 	}
 	
 	private static void getSurahs(FlowPane flowPane) {
@@ -126,14 +138,13 @@ public class NavigationController {
 		Connection connection = DbController.getInstance();	
 		try {
 //			ObservableList<AyahCard> ayahCards = FXCollections.observableArrayList();
-			String sql = "SELECT numberInSurah, a.text as arabic, e.text as translation, b.id as isBookmarked FROM ayahs a join en_ayahs e on e.number = a.number left join bookmark b on b.ayahNumber = a.numberInSurah and b.surahNumber = a.surahNumber where a.surahNumber = ? and numberInSurah >= ? and numberInSurah <= ?";
+			String sql = "SELECT a.number, numberInSurah, a.text as arabic, e.text as translation, b.id as isBookmarked FROM ayahs a join en_ayahs e on e.number = a.number left join bookmark b on b.ayahNumber = a.numberInSurah and b.surahNumber = a.surahNumber where a.surahNumber = ? and numberInSurah >= ? and numberInSurah <= ?";
 			PreparedStatement  statement = connection.prepareStatement(sql);
 			statement.setInt(1, AppData.currentSurahNumber);
 			statement.setInt(2, AppData.fromAyahNumber);
 			statement.setInt(3, AppData.toAyahNumber);
 			
 			ResultSet rs = statement.executeQuery();
-			
 			
 			Thread bgThread = new Thread(()-> {
 				try {

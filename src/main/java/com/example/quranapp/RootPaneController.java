@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 
@@ -31,6 +32,8 @@ public class RootPaneController implements Initializable {
 	Button search_btn;
 	@FXML
 	Menu menu;
+	@FXML
+	AnchorPane audio_container;
 
 	private boolean isDarkMode = false;
 	
@@ -40,9 +43,9 @@ public class RootPaneController implements Initializable {
 			return;
 		}
 		// Set Navigation controller for navigating to different page
-		NavigationController.setContainer(container);
+		NavigationController.setContainer(container, audio_container);
 		NavigationController.goToHome();
-		
+
 		// Dark mode button function
 		dark_mode_btn.setOnAction(e -> {
 			if(!isDarkMode) {
