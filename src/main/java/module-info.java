@@ -7,6 +7,7 @@ module com.example.quranapp {
 
     requires org.controlsfx.controls;
     requires java.sql;
+    requires javafx.media;
 
     opens com.example.quranapp to javafx.fxml;
     exports com.example.quranapp;
