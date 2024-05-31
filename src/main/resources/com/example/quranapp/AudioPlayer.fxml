@@ -12,8 +12,20 @@
 
 <fx:root alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="600.0" type="VBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Slider maxWidth="1.7976931348623157E308" />
-      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-size: 8pt;" />
+      <Slider fx:id="audio_slider" maxWidth="1.7976931348623157E308" />
+      <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="16.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="current_time" maxWidth="1.7976931348623157E308" text="0:00" HBox.hgrow="ALWAYS" />
+            <Label fx:id="current_ayah" alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-size: 8pt;" text="Loading.." />
+            <Label fx:id="end_time" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="0:00" HBox.hgrow="ALWAYS" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </HBox>
       <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="200.0" spacing="10.0">
          <children>
             <Button fx:id="prev_btn" mnemonicParsing="false" style="-fx-background-color: transparent;">
@@ -48,7 +60,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" style="-fx-background-color: transparent;">
+            <Button fx:id="repeat_btn" mnemonicParsing="false" style="-fx-background-color: transparent;">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>

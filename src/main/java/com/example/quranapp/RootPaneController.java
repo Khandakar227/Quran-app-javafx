@@ -75,7 +75,7 @@ public class RootPaneController implements Initializable {
 		Button btn = (Button) e.getTarget();
 		btn.setGraphic(imageView);
 	}
-	
+
 	 public void setScene(Scene scene) {
         this.scene = scene;
 	 }
