@@ -59,6 +59,7 @@ public class AudioPlayer extends VBox {
 
     @FXML
     public void initialize() {
+        setButtonIcon(play_btn, "audio-play.png");
         play_btn.setOnAction((e)-> {
             playAudio();
         });
@@ -83,7 +84,6 @@ public class AudioPlayer extends VBox {
 
     private void playAudio() {
         if(status == AudioSTATS.PLAYING) {
-            System.out.println("Pausing");
             mediaPlayer.pause();
         } else if (status == AudioSTATS.PAUSED) {
             mediaPlayer.play();
@@ -102,11 +102,17 @@ public class AudioPlayer extends VBox {
                 setButtonIcon(play_btn, "audio-play.png");
                 if(repeatStatus == Repeat.ONE)
                     playAudio();
+                else if (mediaPlayer != null) {
+                    mediaPlayer.stop();
+                    mediaPlayer.dispose();
+                }
             });
             mediaPlayer.setOnPaused(() -> {
+                System.out.println("Pausing");
                 status = AudioSTATS.PAUSED;
-                setButtonIcon(play_btn, "pause-48.png");
+                setButtonIcon(play_btn, "audio-play.png");
             });
+            mediaPlayer.setOn
         }
     }
 }

@@ -29,13 +29,6 @@
                </graphic>
             </Button>
             <Button fx:id="play_btn" mnemonicParsing="false" style="-fx-background-color: transparent;">
-               <graphic>
-                  <ImageView fx:id="play_btn_img" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@audio-play.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
                <padding>
                   <Insets left="1.0" right="1.0" />
                </padding>

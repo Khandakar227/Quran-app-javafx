@@ -72,6 +72,7 @@ public class NavigationController {
 		getAyahs(vbox);
 
 		audioContainer.setVisible(true);
+		audioContainer.getChildren().clear();
 		audioContainer.getChildren().add(
 				new AudioPlayer(AppData.currentSurahNumber, AppData.fromAyahNumber, AppData.toAyahNumber)
 		);
