@@ -50,20 +50,21 @@ public class Bookmark extends AnchorPane {
         container.setContent(vbox);
 
         try{
-            String sql = "SELECT b.ayahNumber,b.surahNumber,a.text AS arabic,e.text AS translation,b.id AS isBookmarked FROM BOOKMARK b \n" +
+            String sql = "SELECT a.number, b.ayahNumber,b.surahNumber,a.text AS arabic,e.text AS translation,b.id AS isBookmarked FROM BOOKMARK b \n" +
                     " JOIN ayahs a ON a.numberInSurah = b.ayahNumber and a.surahNumber = b.surahNumber\n" +
                     " JOIN en_ayahs e ON e.number = a.number;";
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
 
             while(resultSet.next()) {
+                int number = resultSet.getInt("number");
                 int ayahNumber = resultSet.getInt("ayahNumber");
                 String arabicText = resultSet.getString("arabic");
                 String translatedText = resultSet.getString("translation");
                 boolean isBookmarked = resultSet.getBoolean("isBookmarked");
                 int surahNumber = resultSet.getInt("surahNumber");
                 Platform.runLater(() -> {
-                    AyahCard ayah = new AyahCard(surahNumber, ayahNumber, arabicText, translatedText, isBookmarked);
+                    AyahCard ayah = new AyahCard(number, surahNumber, ayahNumber, arabicText, translatedText, isBookmarked);
                     vbox.getChildren().add(ayah);
                 });
             }
