@@ -15,22 +15,23 @@ import javafx.scene.text.TextFlow;
 import java.sql.*;
 
 public class AyahCard extends VBox {
-	private int surahNumber, ayahNumber;
+	private int surahNumber, ayahNumber, number;
 	private String arabicText, translatedText;
 	private boolean isBookmarked;
 	@FXML
 	TextFlow arabic_text;
 	@FXML
-	Label translated_text, number;
+	Label translated_text, numberLabel;
 	@FXML
 	Button play_btn, bookmark_btn;
 	
-	public AyahCard(int surahNumber, int ayahNumber, String arabicText, String translatedText, boolean isBookmarked) {
+	public AyahCard(int number, int surahNumber, int ayahNumber, String arabicText, String translatedText, boolean isBookmarked) {
 		this.surahNumber = surahNumber;
 		this.ayahNumber = ayahNumber;
 		this.arabicText = arabicText;
 		this.translatedText = translatedText;
 		this.isBookmarked = isBookmarked;
+		this.number = number;
 		
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AyahCard.fxml"));
 		fxmlLoader.setRoot(this);
@@ -49,7 +50,7 @@ public class AyahCard extends VBox {
 			Text arabic = (Text) arabic_text.getChildren().get(0);
 			arabic.setText(arabicText);
 			translated_text.setText(translatedText);
-			number.setText(Integer.toString(surahNumber) + ":" + Integer.toString(ayahNumber));
+			numberLabel.setText(Integer.toString(surahNumber) + ":" + Integer.toString(ayahNumber));
 
 			bookmark_btn.setOnAction((e) -> {
 				setBookmark(!isBookmarked);
@@ -57,6 +58,10 @@ public class AyahCard extends VBox {
 				isBookmarked = !isBookmarked;
 			});
 			setButtonIcon(bookmark_btn, isBookmarked ? "bookmarked.png" : "bookmark.png");
+
+			play_btn.setOnAction(e -> {
+				fireEvent(new AudioEvent(number));
+			});
 		} catch (Exception e) {
 			System.out.println("[Ayah Card initialize]: "+ e);
 		}

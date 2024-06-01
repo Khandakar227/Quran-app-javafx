@@ -1,6 +1,7 @@
 package com.example.quranapp;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -13,7 +14,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.sql.*;
-import java.time.Duration;
 
 enum AudioSTATS {
         NOTLOADED,
@@ -26,12 +26,13 @@ enum Repeat {
     ONE,
     NO
 }
-public class AudioPlayer extends VBox {
-    int surahNumber, from, to, currentNumber, fromAyahNumber;
-    MediaPlayer mediaPlayer;
+public class AudioPlayer extends VBox implements EventHandler {
+    public static int surahNumber, from, to, currentNumber, fromAyahNumber;
+    static MediaPlayer mediaPlayer;
     Media media;
     AudioSTATS status = AudioSTATS.NOTLOADED;
     Repeat repeatStatus = Repeat.NO;
+    boolean isUserAction = false;
     @FXML
     Button play_btn, prev_btn, next_btn, repeat_btn;
     @FXML
@@ -78,6 +79,7 @@ public class AudioPlayer extends VBox {
         mediaPlayer = new MediaPlayer(media);
 
         setButtonIcon(play_btn, "audio-play.png");
+
         current_ayah.setText(surahNumber + ":" + from);
         play_btn.setOnAction((e)-> {
             playAudio();
@@ -185,5 +187,10 @@ public class AudioPlayer extends VBox {
                 }
             });
         }
+    }
+
+    @Override
+    public void handle(Event event) {
+        System.out.println(event.getEventType());
     }
 }

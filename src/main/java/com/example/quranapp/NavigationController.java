@@ -150,12 +150,13 @@ public class NavigationController {
 			Thread bgThread = new Thread(()-> {
 				try {
 					while (rs.next()) {
+						int number = rs.getInt("number");
 						int ayahNumber =  rs.getInt("numberInSurah");
 						String arabicText = rs.getString("arabic");
 						String translatedText = rs.getString("translation");
 						boolean isBookmarked = rs.getBoolean("isBookmarked");
 						Platform.runLater(() -> {
-							AyahCard ayah = new AyahCard(AppData.currentSurahNumber, ayahNumber, arabicText, translatedText, isBookmarked);
+							AyahCard ayah = new AyahCard(number, AppData.currentSurahNumber, ayahNumber, arabicText, translatedText, isBookmarked);
 							vbox.getChildren().add(ayah);
 						});
 					}
@@ -183,7 +184,7 @@ public class NavigationController {
 		try {
 			String sql = "SELECT numberInSurah, a.surahNumber as surahNumber, a.text as arabic, e.text as translation, b.id as isBookmarked FROM ayahs a join en_ayahs e on e.number = a.number left join bookmark b on b.ayahNumber = a.numberInSurah and b.surahNumber = a.surahNumber where arabic Like ? or LOWER(translation) Like ?";
 			PreparedStatement  statement = connection.prepareStatement(sql);
-			statement.setString(1, "N%" + AppData.searchedKeyword + "%");
+			statement.setString(1, "%" + AppData.searchedKeyword + "%");
 			statement.setString(2, "%" + AppData.searchedKeyword + "%");
 			ResultSet rs = statement.executeQuery();
 			
@@ -192,6 +193,7 @@ public class NavigationController {
 				try {
 					int totalResult = 0;
 					while (rs.next()) {
+						int number = rs.getInt("number");
 						int surahNumber = rs.getInt("surahNumber");
 						int ayahNumber =  rs.getInt("numberInSurah");
 						String arabicText = rs.getString("arabic");
@@ -201,7 +203,7 @@ public class NavigationController {
 						totalResult++;
 						
 						Platform.runLater(() -> {
-							AyahCard ayah = new AyahCard(surahNumber, ayahNumber, arabicText, translatedText, isBookmarked);
+							AyahCard ayah = new AyahCard(number, surahNumber, ayahNumber, arabicText, translatedText, isBookmarked);
 							vbox.getChildren().add(ayah);
 						});
 					}
