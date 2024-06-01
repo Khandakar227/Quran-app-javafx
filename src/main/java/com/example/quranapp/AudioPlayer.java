@@ -112,7 +112,7 @@ public class AudioPlayer extends VBox {
                 status = AudioSTATS.PAUSED;
                 setButtonIcon(play_btn, "audio-play.png");
             });
-            mediaPlayer.setOn
+//            mediaPlayer.setOn
         }
     }
 }

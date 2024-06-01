@@ -3,8 +3,10 @@ package com.example.quranapp;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -32,6 +34,8 @@ public class RootPaneController implements Initializable {
 	Button search_btn;
 	@FXML
 	Menu menu;
+	@FXML
+	MenuItem bookmarks;
 	@FXML
 	AnchorPane audio_container;
 
@@ -64,8 +68,17 @@ public class RootPaneController implements Initializable {
 		});
 
 		menu.setGraphic(getImage("nav-menu.png", 20));
+		bookmarks.setOnAction(e -> handleBookmarks());
 	 }
-	 
+
+
+	public void handleBookmarks(){
+//		int i =0;
+		System.out.println("hello" );
+
+		new Bookmark();
+
+	}
 
 	void setButtonIcon(ActionEvent e, String url) {
 		Image icon = new Image(String.valueOf(RootPaneController.class.getResource(url).toExternalForm()));
