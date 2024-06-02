@@ -173,7 +173,8 @@ public class AudioPlayer extends VBox implements EventHandler {
                 if(repeatStatus == Repeat.ONE)
                     playAudio();
                 else if(repeatStatus == Repeat.ALL) {
-                    currentNumber = (currentNumber + 1) >= fromAyahNumber + (to - from) ? fromAyahNumber : (currentNumber + 1);
+                    currentNumber = (currentNumber + 1) > (fromAyahNumber + (to - from)) ? fromAyahNumber : (currentNumber + 1);
+                    System.out.println(currentNumber + " " + (fromAyahNumber + (to - from)));
                     playAudio();
                 } else if (mediaPlayer != null) {
                     mediaPlayer.stop();

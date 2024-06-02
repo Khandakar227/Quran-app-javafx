@@ -71,12 +71,6 @@ public class NavigationController {
 		container.setContent(vbox);
 
 		getAyahs(vbox);
-
-		audioContainer.setVisible(true);
-		audioContainer.getChildren().clear();
-		audioContainer.getChildren().add(
-				new AudioPlayer(AppData.currentSurahNumber, AppData.fromAyahNumber, AppData.toAyahNumber)
-		);
 	}
 
 	public static void goToSearchPage() {
@@ -138,7 +132,7 @@ public class NavigationController {
 	}
 	
 	private static void getAyahs(VBox vbox) {
-		Connection connection = DbController.getInstance();	
+		Connection connection = DbController.getInstance();
 		try {
 //			ObservableList<AyahCard> ayahCards = FXCollections.observableArrayList();
 			String sql = "SELECT a.number, numberInSurah, a.text as arabic, e.text as translation, b.id as isBookmarked FROM ayahs a join en_ayahs e on e.number = a.number left join bookmark b on b.ayahNumber = a.numberInSurah and b.surahNumber = a.surahNumber where a.surahNumber = ? and numberInSurah >= ? and numberInSurah <= ?";
@@ -148,20 +142,29 @@ public class NavigationController {
 			statement.setInt(3, AppData.toAyahNumber);
 			
 			ResultSet rs = statement.executeQuery();
-			
 			Thread bgThread = new Thread(()-> {
 				try {
+					int toAyahNumber = AppData.fromAyahNumber - 1;
 					while (rs.next()) {
 						int number = rs.getInt("number");
 						int ayahNumber =  rs.getInt("numberInSurah");
 						String arabicText = rs.getString("arabic");
 						String translatedText = rs.getString("translation");
 						boolean isBookmarked = rs.getBoolean("isBookmarked");
+						toAyahNumber++;
 						Platform.runLater(() -> {
 							AyahCard ayah = new AyahCard(number, AppData.currentSurahNumber, ayahNumber, arabicText, translatedText, isBookmarked);
 							vbox.getChildren().add(ayah);
 						});
 					}
+					AppData.toAyahNumber = toAyahNumber;
+					Platform.runLater(() -> {
+						audioContainer.setVisible(true);
+						audioContainer.getChildren().clear();
+						audioContainer.getChildren().add(
+								new AudioPlayer(AppData.currentSurahNumber, AppData.fromAyahNumber, AppData.toAyahNumber)
+						);
+					});
 					rs.close();
 					
 					Platform.runLater(() -> {
