@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bookmark extends AnchorPane {
-    private List<AyahCard> bookedAyahs = new ArrayList<>();
+    static Stage bookmarkStage;
     @FXML
     ScrollPane container;
     @FXML
@@ -29,14 +29,19 @@ public class Bookmark extends AnchorPane {
         getBookedAyahs();
     }
     public Bookmark(){
+        if (bookmarkStage != null) {
+            bookmarkStage.close();
+        }
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Bookmark.fxml"));
         fxmlLoader.setController(this);
         try{
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.show();
+            scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            bookmarkStage = new Stage();
+            bookmarkStage.setScene(scene);
+            bookmarkStage.show();
+
         }catch(Exception e) {
             System.out.println(e);
             e.printStackTrace();
@@ -48,6 +53,7 @@ public class Bookmark extends AnchorPane {
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(10);
         container.setContent(vbox);
+        container.setFitToWidth(true);
 
         try{
             String sql = "SELECT a.number, b.ayahNumber,b.surahNumber,a.text AS arabic,e.text AS translation,b.id AS isBookmarked FROM BOOKMARK b \n" +

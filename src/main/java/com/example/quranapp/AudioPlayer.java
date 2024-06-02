@@ -28,7 +28,7 @@ enum Repeat {
 }
 public class AudioPlayer extends VBox implements EventHandler {
     public static int surahNumber, from, to, currentNumber, fromAyahNumber;
-    static MediaPlayer mediaPlayer;
+    public static MediaPlayer mediaPlayer;
     Media media;
     AudioSTATS status = AudioSTATS.NOTLOADED;
     Repeat repeatStatus = Repeat.NO;
@@ -86,12 +86,14 @@ public class AudioPlayer extends VBox implements EventHandler {
         });
 
         if(repeatStatus == Repeat.NO) setButtonIcon(repeat_btn, "no-repeat-48.png", 20);
-        else  setButtonIcon(repeat_btn, "repeat-48.png", 20);
+        else if (repeatStatus == Repeat.ONE) setButtonIcon(repeat_btn, "repeat-one-48.png", 20);
+        else setButtonIcon(repeat_btn, "repeat-48.png", 20);
 
         repeat_btn.setOnAction((e) -> {
-            repeatStatus = repeatStatus == Repeat.NO ? Repeat.ONE : Repeat.NO;
+            repeatStatus = repeatStatus == Repeat.NO ? Repeat.ONE : repeatStatus == Repeat.ONE ? Repeat.ALL : Repeat.NO;
             if(repeatStatus == Repeat.NO) setButtonIcon(repeat_btn, "no-repeat-48.png", 20);
-            else  setButtonIcon(repeat_btn, "repeat-48.png", 20);
+            else if (repeatStatus == Repeat.ONE) setButtonIcon(repeat_btn, "repeat-one-48.png", 20);
+            else setButtonIcon(repeat_btn, "repeat-48.png", 20);
         });
 
         prev_btn.setOnAction((e) -> {
@@ -111,7 +113,6 @@ public class AudioPlayer extends VBox implements EventHandler {
 
         next_btn.setOnAction((e) -> {
             currentNumber = (currentNumber + 1) >= fromAyahNumber + (to - from) ? currentNumber : (currentNumber + 1);
-            System.out.println(currentNumber);
             try {
                 if(mediaPlayer != null) {
                     mediaPlayer.stop();
@@ -142,6 +143,7 @@ public class AudioPlayer extends VBox implements EventHandler {
     }
 
     private void playAudio() {
+        current_ayah.setText(surahNumber + ":" + (from + (currentNumber - fromAyahNumber)));
         if(status == AudioSTATS.PLAYING) {
             mediaPlayer.pause();
         } else if (status == AudioSTATS.PAUSED) {
@@ -170,7 +172,10 @@ public class AudioPlayer extends VBox implements EventHandler {
                 setButtonIcon(play_btn, "audio-play.png");
                 if(repeatStatus == Repeat.ONE)
                     playAudio();
-                else if (mediaPlayer != null) {
+                else if(repeatStatus == Repeat.ALL) {
+                    currentNumber = (currentNumber + 1) >= fromAyahNumber + (to - from) ? fromAyahNumber : (currentNumber + 1);
+                    playAudio();
+                } else if (mediaPlayer != null) {
                     mediaPlayer.stop();
                     mediaPlayer.dispose();
                 }
@@ -189,6 +194,10 @@ public class AudioPlayer extends VBox implements EventHandler {
         }
     }
 
+    public static void stopAudio() {
+        if(mediaPlayer != null) mediaPlayer.stop();
+        mediaPlayer = null;
+    }
     @Override
     public void handle(Event event) {
         System.out.println(event.getEventType());

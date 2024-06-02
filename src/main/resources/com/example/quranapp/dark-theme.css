@@ -21,3 +21,8 @@
 	-fx-text-fill: #FFF!important;
 	-fx-fill: #FFF;
 }
+.dark-audio-container {
+	-fx-background-color: #0e0e0e;
+	-fx-text-fill: #FFF!important;
+	-fx-fill: #FFF;
+}

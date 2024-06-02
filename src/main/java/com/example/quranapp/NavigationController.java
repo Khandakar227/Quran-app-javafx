@@ -48,6 +48,7 @@ public class NavigationController {
 		container.setFitToWidth(true);
 
 		audioContainer.setVisible(false);
+		AudioPlayer.stopAudio();
 	}
 	
 	public static void goToSurah(int surahNumber, int from, int to, int totalAyahs) {
@@ -89,6 +90,7 @@ public class NavigationController {
 
 		getSearch(vbox);
 		audioContainer.setVisible(false);
+		AudioPlayer.stopAudio();
 	}
 	
 	private static void getSurahs(FlowPane flowPane) {

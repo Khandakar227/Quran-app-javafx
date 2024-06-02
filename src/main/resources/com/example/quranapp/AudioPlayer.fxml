@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="600.0" type="VBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="600.0" styleClass="dark-audio-container" type="VBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Slider fx:id="audio_slider" maxWidth="1.7976931348623157E308" />
       <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="16.0" prefWidth="200.0">

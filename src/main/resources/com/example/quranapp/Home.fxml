@@ -35,8 +35,8 @@
                           <menus>
                             <Menu fx:id="menu" mnemonicParsing="false">
                               <items>
+                                    <MenuItem fx:id="goback_btn" mnemonicParsing="false" text="          Go Back          " />
                                 <MenuItem fx:id="bookmarks" mnemonicParsing="false" text="          Bookmarks          " />
-                                    <MenuItem mnemonicParsing="false" text="          Last Read          " />
                                     <MenuItem mnemonicParsing="false" text="          Settings          " />
                               </items>
                             </Menu>

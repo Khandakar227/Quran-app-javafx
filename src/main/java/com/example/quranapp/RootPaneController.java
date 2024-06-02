@@ -24,13 +24,11 @@ public class RootPaneController implements Initializable {
 	@FXML
 	Button dark_mode_btn;
 	@FXML
-	Label home_label;
-	@FXML
 	Button search_btn;
 	@FXML
 	Menu menu;
 	@FXML
-	MenuItem bookmarks;
+	MenuItem bookmarks, goback_btn;
 	@FXML
 	AnchorPane audio_container;
 
@@ -58,21 +56,18 @@ public class RootPaneController implements Initializable {
 			}
 		});
 
-		home_label.setOnMouseClicked(e -> {
-			NavigationController.goToHome();
-		});
 
 		menu.setGraphic(getImage("nav-menu.png", 20));
 		bookmarks.setOnAction(e -> handleBookmarks());
+		goback_btn.setOnAction(e -> handleGoBack());
 	 }
 
 
-	public void handleBookmarks(){
-//		int i =0;
-		System.out.println("hello" );
-
+	public void handleBookmarks() {
 		new Bookmark();
-
+	}
+	public void handleGoBack() {
+		NavigationController.goToHome();
 	}
 
 	void setButtonIcon(ActionEvent e, String url) {
