@@ -12,6 +12,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+            AppData.translationMap.put("English", "en_ayahs");
+            AppData.translationMap.put("Bangla", "bn_ayahs");
+
             //Font.loadFont(getClass().getResourceAsStream("resources/UthmanicScriptHAFS.otf"), 24);
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("Home.fxml"));
             Parent root = loader.load();

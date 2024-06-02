@@ -3,16 +3,18 @@ package com.example.quranapp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 
 
 public class AppData {
 	public static String currentPage = "Home";
-	public static int currentSurahNumber = 1,
+	public static int currentSurahNumber = 0,
 					  fromAyahNumber = 1,
 					  toAyahNumber = 20,
 					  numberOfAyahs;
 	public static String searchedKeyword = "";
 	public static SurahModel currentSurah;
+	public static HashMap<String, String> translationMap = new HashMap<>();
 	
 	public static SurahModel getSurah() {
 		Connection connection = DbController.getInstance();	

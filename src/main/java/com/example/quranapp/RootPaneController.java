@@ -28,10 +28,11 @@ public class RootPaneController implements Initializable {
 	@FXML
 	Menu menu;
 	@FXML
-	MenuItem bookmarks, goback_btn;
+	MenuItem bookmarks, goback_btn, settings_btn;
 	@FXML
 	AnchorPane audio_container;
-
+	@FXML
+	ChoiceBox<Integer> go_to_verse;
 	private boolean isDarkMode = false;
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -40,7 +41,7 @@ public class RootPaneController implements Initializable {
 			return;
 		}
 		// Set Navigation controller for navigating to different page
-		NavigationController.setContainer(container, audio_container);
+		NavigationController.setContainer(container, audio_container, go_to_verse);
 		NavigationController.goToHome();
 
 		// Dark mode button function
@@ -60,6 +61,11 @@ public class RootPaneController implements Initializable {
 		menu.setGraphic(getImage("nav-menu.png", 20));
 		bookmarks.setOnAction(e -> handleBookmarks());
 		goback_btn.setOnAction(e -> handleGoBack());
+		settings_btn.setOnAction(e -> handleSettings());
+
+		go_to_verse.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			NavigationController.goToSurah(AppData.currentSurahNumber, newValue, newValue+20, AppData.numberOfAyahs);
+		});
 	 }
 
 
@@ -68,6 +74,9 @@ public class RootPaneController implements Initializable {
 	}
 	public void handleGoBack() {
 		NavigationController.goToHome();
+	}
+	public void handleSettings() {
+		new Settings();
 	}
 
 	void setButtonIcon(ActionEvent e, String url) {

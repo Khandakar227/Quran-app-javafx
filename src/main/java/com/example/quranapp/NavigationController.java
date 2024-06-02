@@ -5,12 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
@@ -21,10 +24,12 @@ public class NavigationController {
 	static ScrollPane container = null;
 	static VBox vbox;
 	static AnchorPane audioContainer = null;
+	static ChoiceBox<Integer> ayahNumberBox = null;
 
-	public static void setContainer(ScrollPane container, AnchorPane audioContainer) {
+	public static void setContainer(ScrollPane container, AnchorPane audioContainer, ChoiceBox<Integer> ayahNumberBox) {
 		NavigationController.container = container;
 		NavigationController.audioContainer = audioContainer;
+		NavigationController.ayahNumberBox = ayahNumberBox;
 	}
 	
 	public static void clearContainer() {
@@ -46,13 +51,17 @@ public class NavigationController {
 		flowPane.setAlignment(Pos.CENTER);
 		container.setContent(flowPane);
 		container.setFitToWidth(true);
-
+		container.setPadding(new Insets(0, 0, 0, 0));
 		audioContainer.setVisible(false);
 		AudioPlayer.stopAudio();
+
+		ayahNumberBox.getItems().clear();
 	}
 	
 	public static void goToSurah(int surahNumber, int from, int to, int totalAyahs) {
 		AppData.currentPage = "Surah";
+		boolean isChanged = false;
+		if(AppData.currentSurahNumber != surahNumber) isChanged = true;
 		AppData.currentSurahNumber = surahNumber;
 		AppData.fromAyahNumber = from;
 		AppData.toAyahNumber = to;
@@ -69,8 +78,14 @@ public class NavigationController {
 		vbox.getChildren().add(surahNameCard);
 		
 		container.setContent(vbox);
+		container.setPadding(new Insets(0, 0, 80, 0));
 
 		getAyahs(vbox);
+
+		if(isChanged) {
+			for (int i = 1; i <= AppData.numberOfAyahs; i++)
+				ayahNumberBox.getItems().add(i);
+		}
 	}
 
 	public static void goToSearchPage() {
@@ -114,7 +129,7 @@ public class NavigationController {
 									englishName + " (" + englishNameTranslation + ")",
 									surahType
 									)
-								);							
+								);
 						});
 					
 					}
@@ -134,8 +149,9 @@ public class NavigationController {
 	private static void getAyahs(VBox vbox) {
 		Connection connection = DbController.getInstance();
 		try {
+			String translationTable = AppData.translationMap.get(Settings.getTranslation());
 //			ObservableList<AyahCard> ayahCards = FXCollections.observableArrayList();
-			String sql = "SELECT a.number, numberInSurah, a.text as arabic, e.text as translation, b.id as isBookmarked FROM ayahs a join en_ayahs e on e.number = a.number left join bookmark b on b.ayahNumber = a.numberInSurah and b.surahNumber = a.surahNumber where a.surahNumber = ? and numberInSurah >= ? and numberInSurah <= ?";
+			String sql = "SELECT a.number, numberInSurah, a.text as arabic, e.text as translation, b.id as isBookmarked FROM ayahs a join " + translationTable +" e on e.number = a.number left join bookmark b on b.ayahNumber = a.numberInSurah and b.surahNumber = a.surahNumber where a.surahNumber = ? and numberInSurah >= ? and numberInSurah <= ?";
 			PreparedStatement  statement = connection.prepareStatement(sql);
 			statement.setInt(1, AppData.currentSurahNumber);
 			statement.setInt(2, AppData.fromAyahNumber);
@@ -186,8 +202,10 @@ public class NavigationController {
 	}
 	private static void getSearch(VBox vbox) {
 		Connection connection = DbController.getInstance();
+		String translationTable = AppData.translationMap.get(Settings.getTranslation());
 		try {
-			String sql = "SELECT numberInSurah, a.surahNumber as surahNumber, a.text as arabic, e.text as translation, b.id as isBookmarked FROM ayahs a join en_ayahs e on e.number = a.number left join bookmark b on b.ayahNumber = a.numberInSurah and b.surahNumber = a.surahNumber where arabic Like ? or LOWER(translation) Like ?";
+			String sql = "SELECT e.number, numberInSurah, a.surahNumber as surahNumber, a.text as arabic, e.text as translation, b.id as isBookmarked FROM ayahs a join "+ translationTable + " e on e.number = a.number left join bookmark b on b.ayahNumber = a.numberInSurah and b.surahNumber = a.surahNumber where arabic Like ? or LOWER(translation) Like ?";
+//			System.out.println(sql + " " + translationTable );
 			PreparedStatement  statement = connection.prepareStatement(sql);
 			statement.setString(1, "%" + AppData.searchedKeyword + "%");
 			statement.setString(2, "%" + AppData.searchedKeyword + "%");
@@ -204,7 +222,6 @@ public class NavigationController {
 						String arabicText = rs.getString("arabic");
 						String translatedText = rs.getString("translation");
 						boolean isBookmarked = rs.getBoolean("isBookmarked");
-						
 						totalResult++;
 						
 						Platform.runLater(() -> {

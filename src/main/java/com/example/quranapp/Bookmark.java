@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -40,6 +41,7 @@ public class Bookmark extends AnchorPane {
             scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
             bookmarkStage = new Stage();
             bookmarkStage.setScene(scene);
+            bookmarkStage.getIcons().add(new Image(String.valueOf(getClass().getResource("App-icon.png"))));
             bookmarkStage.show();
 
         }catch(Exception e) {
@@ -56,9 +58,10 @@ public class Bookmark extends AnchorPane {
         container.setFitToWidth(true);
 
         try{
+            String translationTable = AppData.translationMap.get(Settings.getTranslation());
             String sql = "SELECT a.number, b.ayahNumber,b.surahNumber,a.text AS arabic,e.text AS translation,b.id AS isBookmarked FROM BOOKMARK b \n" +
                     " JOIN ayahs a ON a.numberInSurah = b.ayahNumber and a.surahNumber = b.surahNumber\n" +
-                    " JOIN en_ayahs e ON e.number = a.number;";
+                    " JOIN " + translationTable + " e ON e.number = a.number;";
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
 
@@ -74,6 +77,7 @@ public class Bookmark extends AnchorPane {
                     vbox.getChildren().add(ayah);
                 });
             }
+            resultSet.close();
         }
         catch (Exception e){
             System.out.println(e);

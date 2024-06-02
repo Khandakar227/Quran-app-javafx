@@ -67,14 +67,22 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </TextFlow>
-                  <Label fx:id="translated_text" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="dark" wrapText="true">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
+                  <TextFlow fx:id="translated_text">
+                     <children>
+                        <Text strokeType="OUTSIDE" style="-fx-font-size: 16pt;" textAlignment="RIGHT" wrappingWidth="1.0">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="uthmani-font" />
+                              <String fx:value="dark" />
+                           </styleClass>
+                        </Text>
+                     </children>
                      <padding>
-                        <Insets top="10.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
-                  </Label>
+                  </TextFlow>
                </children>
                <padding>
                   <Insets left="5.0" right="5.0" />

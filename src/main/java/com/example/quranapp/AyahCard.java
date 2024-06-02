@@ -19,9 +19,9 @@ public class AyahCard extends VBox {
 	private String arabicText, translatedText;
 	private boolean isBookmarked;
 	@FXML
-	TextFlow arabic_text;
+	TextFlow arabic_text, translated_text;
 	@FXML
-	Label translated_text, numberLabel;
+	Label numberLabel;
 	@FXML
 	Button play_btn, bookmark_btn;
 	
@@ -48,8 +48,9 @@ public class AyahCard extends VBox {
 	public void initialize() {
 		try {
 			Text arabic = (Text) arabic_text.getChildren().get(0);
+			Text translated = (Text) translated_text.getChildren().get(0);
 			arabic.setText(arabicText);
-			translated_text.setText(translatedText);
+			translated.setText(translatedText);
 			numberLabel.setText(Integer.toString(surahNumber) + ":" + Integer.toString(ayahNumber));
 
 			bookmark_btn.setOnAction((e) -> {
